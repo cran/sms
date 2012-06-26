@@ -1,0 +1,14 @@
+8844762e5c769e2cd12ce2aa3119dc75 *DESCRIPTION
+35a16a8267ac47d6b2991bf2e910ace4 *NAMESPACE
+14117dae886330d87fa01072a9388c6a *NEWS
+83f96fa50716b39928abc65c817d366a *R/classes.r
+fcdee0985ac569b36be88d6215c6a9ca *man/calculate_error.Rd
+bf27ae8d9239cacf9d50d5317abe6624 *man/find_best_selection.Rd
+bc6a38c3620bf2b5c46b8f88c7e80218 *man/find_best_selection_SA.Rd
+696d911fcd99e991ac2d5732682536bc *man/plotTries.Rd
+2db48dde4adf93c5360aacb3bba54faf *man/random_panel_selection.Rd
+a06dd5a11ff6dcfc23f3b91945128fbf *man/run_parallel.Rd
+257b939a09066c9b9e576d3df68b517f *man/run_parallel_SA.Rd
+77581346be5a2554ad80977a89371c7f *man/run_serial.Rd
+92868b63c93c5a39264ac5810e38310e *man/selection_for_area.Rd
+7c0ea8500bb3a9129cbb8f8e23b69c42 *man/sms-package.Rd
