@@ -16,20 +16,18 @@
   list A list of results (#areaid, #selection, #error)
 }
 \description{
-  Make a selection
+  Make a single selection of individual records for a
+  census area.
 }
 \details{
-  Select a number of population from panel data, to
-  represent an area.
+  Select a number of individual records from panel dataset,
+  to represent a census description of an area.
 }
 \examples{
 library(sms)
-#========================= Panel Data ============================
 n=20
-panel=data.frame(pid=6001:(6000+n), he=sample(0:1,n,rep=TRUE),females=sample(0:1,n,rep=TRUE))
-#========================= Census Data ============================
+panel=data.frame(pid=6001:(6000+n), he=sample(0:1,n,replace=TRUE),females=sample(0:1,n,replace=TRUE))
 census=data.frame(areaid=c(101,102) , population=c(54,50), he=c(36,30), fem= c(24,27))
-#========================= Data linkage ===========================
 con_01=c("he","he" )
 con_02=c("fem","females" )
 in.lexicon=data.frame(con_01,con_02 )
@@ -40,6 +38,6 @@ sel=selection_for_area(panel,this_area, in.lexicon) #make a representation for t
 print(sel) #print the representation
 }
 \author{
-  Dimitris Kavroudakis
+  Dimitris Kavroudakis \email{dimitris123@gmail.com}
 }
 

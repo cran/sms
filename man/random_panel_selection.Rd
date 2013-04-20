@@ -5,28 +5,28 @@
   random_panel_selection(indf, n)
 }
 \arguments{
-  \item{indf}{A dataframe}
+  \item{indf}{The initial dataframe from wich a selection
+  will be made.}
 
-  \item{n}{Number of random rows}
+  \item{n}{The number of random rows}
 }
 \value{
-  a selection of rows.
+  a selection of rows as a dataframe
 }
 \description{
-  Select random rows
+  Select n random rows from a dataframe
 }
 \details{
-  Select a specific number of random rows from a data.frame
+  Select n random rows from a dataframe
 }
 \examples{
 library(sms)
-#========================= Panel Data ============================
 n=20
-panel=data.frame(pid=6001:6020, he=sample(0:1,n,rep=TRUE),females=sample(0:1,n,rep=TRUE))
+panel=data.frame(pid=6001:6020, he=sample(0:1,n,replace=TRUE),females=sample(0:1,n,replace=TRUE))
 some.individuals=random_panel_selection(panel,4)
 print(some.individuals) #print the selection of individuals
 }
 \author{
-  Dimitris Kavroudakis
+  Dimitris Kavroudakis \email{dimitris123@gmail.com}
 }
 

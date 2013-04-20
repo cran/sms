@@ -18,19 +18,17 @@
   census description of this area.
 }
 \description{
-  Calculate error of a selection
+  Calculate the error of a selection.
 }
 \details{
-  Calculates the Total Absolute Error of an area selection.
+  Calculates the Total Absolute Error (TAE) of a selection
+  for a census area.
 }
 \examples{
 library(sms)
-#========================= Panel Data ============================
 n=20
-panel=data.frame(pid=6001:6020, he=sample(0:1,n,rep=TRUE),females=sample(0:1,n,rep=TRUE))
-#========================= Census Data ============================
+panel=data.frame(pid=6001:6020, he=sample(0:1,n,replace=TRUE),females=sample(0:1,n,replace=TRUE))
 census=data.frame(areaid=c(101,102) , population=c(54,50), he=c(36,30), fem= c(24,27))
-#========================= Data linkage ===========================
 con_01=c("he","he" )
 con_02=c("fem","females" )
 in.lexicon=data.frame(con_01,con_02 )
@@ -42,6 +40,6 @@ error=calculate_error(selection,this_area,in.lexicon) #evaluate the Total Absolu
 print(error) #print the error of the selection
 }
 \author{
-  Dimitris Kavroudakis
+  Dimitris Kavroudakis \email{dimitris123@gmail.com}
 }
 

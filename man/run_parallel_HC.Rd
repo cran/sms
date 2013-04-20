@@ -1,8 +1,8 @@
-\name{run_serial}
-\alias{run_serial}
-\title{Run_serial}
+\name{run_parallel_HC}
+\alias{run_parallel_HC}
+\title{run_parallel_HC}
 \usage{
-  run_serial(insms)
+  run_parallel_HC(insms)
 }
 \arguments{
   \item{insms}{A microsimulation object which holds the
@@ -14,24 +14,22 @@
   for each area.
 }
 \description{
-  Run a simulation in serial mode
+  Run a simulation in serial mode with Hill Climbing
 }
 \details{
-  Run a simulation in serial mode.
+  Run a simulation in serial mode with Hill Climbing
 }
 \examples{
+library(sms)
 library(sms)
 n=20
 panel=data.frame(pid=6001:6020, he=sample(0:1,n,replace=TRUE),females=sample(0:1,n,replace=TRUE))
 census=data.frame(areaid=c(101,102) , population=c(54,50), he=c(36,30), fem= c(24,27))
-con_01=c("he","he" )
-con_02=c("fem","females" )
-in.lexicon=data.frame(con_01,con_02 )
+in.lexicon=data.frame(c("he","he" ),c("fem","females" ) )
 row.names(in.lexicon)=c("census_row","panel_row")
-
-insms= new("microsimulation",census=census, panel=panel, lexicon=in.lexicon, iterations=5)
-results= run_serial( insms)
-print(results)
+insms= new("microsimulation",census=census,panel=panel, lexicon=in.lexicon, iterations=10)
+re=run_parallel_HC(insms)
+print(re)
 }
 \author{
   Dimitris Kavroudakis \email{dimitris123@gmail.com}

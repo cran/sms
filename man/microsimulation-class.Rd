@@ -1,0 +1,30 @@
+\name{microsimulation-class}
+\alias{microsimulation-class}
+\title{A microsimulation object}
+\arguments{
+  \item{census:}{A census data.frame where each row
+  contains census information about a geographical area}
+
+  \item{panel:}{A data.frame containing the individual
+  based records from a panel survey. those data will be
+  fitted to small area contrains and will populate each
+  vrtual area.}
+
+  \item{lexicon:}{A data.frame containing the association
+  of columns between census data and panel data. Each row
+  contain a conection between census and panel data.frame.}
+
+  \item{resuls:}{A list of results from the fitting
+  process.}
+
+  \item{iterations:}{The number of itertions until th end
+  of the fitting process.}
+}
+\description{
+  It holds all microsimulation details and objects such as
+  data, results etc.
+}
+\author{
+  Dimitris Kavroudakis \email{dimitris123@gmail.com}
+}
+
