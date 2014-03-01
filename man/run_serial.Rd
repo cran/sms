@@ -2,7 +2,7 @@
 \alias{run_serial}
 \title{Run_serial}
 \usage{
-  run_serial(insms)
+run_serial(insms)
 }
 \arguments{
   \item{insms}{A microsimulation object which holds the
@@ -10,30 +10,28 @@
   lexicon.}
 }
 \value{
-  msm_results An object with the results of the simulation,
-  for each area.
+msm_results An object with the results of the simulation,
+for each area.
 }
 \description{
-  Run a simulation in serial mode
+Run a simulation in serial mode
 }
 \details{
-  Run a simulation in serial mode.
+Run a simulation in serial mode.
 }
 \examples{
 library(sms)
-n=20
-panel=data.frame(pid=6001:6020, he=sample(0:1,n,replace=TRUE),females=sample(0:1,n,replace=TRUE))
-census=data.frame(areaid=c(101,102) , population=c(54,50), he=c(36,30), fem= c(24,27))
-con_01=c("he","he" )
-con_02=c("fem","females" )
-in.lexicon=data.frame(con_01,con_02 )
-row.names(in.lexicon)=c("census_row","panel_row")
+data(survey)
+data(census)
+in.lexicon=createLexicon()
+in.lexicon=addDataAssociation(in.lexicon, c("he","he"))
+in.lexicon=addDataAssociation(in.lexicon, c("females","female"))
 
-insms= new("microsimulation",census=census, panel=panel, lexicon=in.lexicon, iterations=5)
+insms= new("microsimulation",census=census, panel=survey, lexicon=in.lexicon, iterations=5)
 results= run_serial( insms)
 print(results)
 }
 \author{
-  Dimitris Kavroudakis \email{dimitris123@gmail.com}
+Dimitris Kavroudakis \email{dimitris123@gmail.com}
 }
 

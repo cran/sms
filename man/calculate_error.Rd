@@ -2,7 +2,7 @@
 \alias{calculate_error}
 \title{Calculate error of a selection}
 \usage{
-  calculate_error(selection, area_census, lexicon)
+calculate_error(selection, area_census, lexicon)
 }
 \arguments{
   \item{selection}{A population selection, to evaluate its
@@ -14,32 +14,35 @@
   connections}
 }
 \value{
-  TAE Total Absolute Error of this selection against the
-  census description of this area.
+TAE Total Absolute Error of this selection against the
+census description of this area.
 }
 \description{
-  Calculate the error of a selection.
+Calculate the error of a selection.
 }
 \details{
-  Calculates the Total Absolute Error (TAE) of a selection
-  for a census area.
+Calculates the Total Absolute Error (TAE) of a selection
+for a census area.
 }
 \examples{
 library(sms)
-n=20
-panel=data.frame(pid=6001:6020, he=sample(0:1,n,replace=TRUE),females=sample(0:1,n,replace=TRUE))
-census=data.frame(areaid=c(101,102) , population=c(54,50), he=c(36,30), fem= c(24,27))
-con_01=c("he","he" )
-con_02=c("fem","females" )
-in.lexicon=data.frame(con_01,con_02 )
-row.names(in.lexicon)=c("census_row","panel_row")
+data(survey) #load the data
+data(census)
+in.lexicon=createLexicon() # Create a data lexicon for holding the associated column names.
+in.lexicon=addDataAssociation(in.lexicon, c("he","he"))
+in.lexicon=addDataAssociation(in.lexicon, c("females","female"))
 
-this_area=as.data.frame(census[1,]) #Select the first area from the census table
-selection=random_panel_selection(panel,this_area$population) #make a random selection of individuals for this area.
-error=calculate_error(selection,this_area,in.lexicon) #evaluate the Total Absolute Error (TAE) for this selection
-print(error) #print the error of the selection
+#Select the first area from the census table
+this_area=as.data.frame(census[1,])
+
+#make a random selection of individuals for this area.
+selection=random_panel_selection( survey, this_area$population )
+
+#evaluate the Total Absolute Error (TAE) for this selection
+error=calculate_error( selection, this_area, in.lexicon )
+print( error )    # print the error of the selection
 }
 \author{
-  Dimitris Kavroudakis \email{dimitris123@gmail.com}
+Dimitris Kavroudakis \email{dimitris123@gmail.com}
 }
 

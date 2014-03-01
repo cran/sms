@@ -1,0 +1,19 @@
+\docType{data}
+\name{census}
+\alias{census}
+\title{A census dataset of 10 areas}
+\format{A data frame with 10 rows and 4 variables}
+\usage{
+data(census)
+}
+\description{
+A sample census dataset containing descriptive information
+about 10 geographical areas. The variables in the dataset
+are as follows: \itemize{ \item areaid: The unique
+indentifier of the area \item population: The number of
+indivisuals in the area.  \item he: Number of individuals
+in the area, with at least Higher Education degree \item
+females: Number of female individuals in the area }
+}
+\keyword{datasets}
+

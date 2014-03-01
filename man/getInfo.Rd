@@ -1,23 +1,18 @@
 \name{getInfo}
 \alias{getInfo}
 \alias{getInfo,microsimulation-generic}
-\alias{getInfo,microsimulation-method}
 \title{getInfo Generic}
+\usage{
+getInfo(object)
+}
 \arguments{
-  \item{object}{A microsimulation object to get its
-  information.}
-
   \item{object}{A microsimulation object to get its
   information.}
 }
 \description{
-  getInfo Generic
-
-  Get information from a microsimulation object
+getInfo Generic
 }
 \author{
-  Dimitris Kavroudakis \email{dimitris123@gmail.com}
-
-  Dimitris Kavroudakis \email{dimitris123@gmail.com}
+Dimitris Kavroudakis \email{dimitris123@gmail.com}
 }
 

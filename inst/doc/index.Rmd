@@ -1,0 +1,147 @@
+<style rel="stylesheet">
+table{border-collapse:collapse;}
+table,th, td{ border: 1px solid grey; padding: 3px;}
+img{display: block;  margin-left: auto; margin-right: auto;   box-shadow:  10px 10px 10px -7px black; }
+body{text-align:justify; margin: 0 auto;font-family: Georgia, Palatino, serif; color: #444444;line-height: 1; max-width: 900px;padding: 30px;}
+h1, h2, h3, h4 {color: #111111;  font-weight: 400;}
+h1, h2, h3, h4, h5, p { margin-bottom: 10px;  padding: 0;}
+h1 { margin-bottom: 0px; text-align:center;   font-size: 36px;}
+.version{text-align:center; font-size: 20px;}
+h2 {    font-size: 25px;
+    /* The bottom margin is small. It's designed to be used with gray meta text
+     * below a post title. */
+    margin: 70px 0px 0px 0px;}
+h3 {    font-size: 24px;}
+h4 {    font-size: 21px;}
+h5 {    font-size: 18px;}
+a {    color: #0099ff;    margin: 0;    padding: 0;    vertical-align: baseline;}
+a:hover {    text-decoration: none;    color: #ff6600;}
+a:visited {    color: purple;}
+ul, ol {    padding: 0;    margin: 0;}
+li {    line-height: 24px;}
+li ul, li ul {    margin-left: 24px;}
+p, ul, ol {    font-size: 16px;    line-height: 24px; }
+pre {    padding: 0px 0px;    max-width: 900px;   white-space: pre-wrap;}
+code { font-family: Consolas, Monaco, Andale Mono, monospace; max-width: 900px; line-height: 1.5; font-size: 13px;}
+aside {    display: block;    float: right;    width: 390px;}
+blockquote {border-left:.5em solid #eee;  padding: 0 2em;  margin-left:0; }
+blockquote  cite {font-size:14px;   line-height:20px;   color:#bfbfbf;}
+blockquote cite:before {  content: '\2014 \00A0';}
+blockquote p {      color: #666;   }
+hr {  width: 540px;    text-align: left;    margin: 0 auto 0 0;    color: #999;}
+</style>
+
+
+```{r init, verbose=FALSE, warning=FALSE, error=FALSE, message=FALSE, results='hide', echo=FALSE}
+opts_chunk$set(verbose=FALSE, warning=T, error=T, message=FALSE, prompt=F, comment="" )
+```
+
+<h1 class="titlos">sms library tutorial: Preparing microdata</h1>
+
+<div class="version">Dr. Dimitris Kavroudakis</div>
+<div class="version"><a href="http://www.dimitrisk.gr">dimitrisk.gr</a> - <a href="mailto:dimitris123@gmail.com">dimitris123@gmail.com</a> </div>
+
+Introduction
+---
+
+Spatial microsimulation is a methodology aiming to simulate entities such as households, individuals or business in the finer possible scale. This process requires the use of micro-datasets with individual based information. The sms library presented in this work, facilitates the production of small area population micro-data by combining various other datasets. This is a parallelized implementation of random selection with thoptimization to select a micro-dataset with characteristics that mach a macro description. The sms library contains functions for preparing micro-data from census and longitudinal datasets. This process is called fiting and is the primary step in spatial microsimulation methodology. It actualy fits small area datasets to census area descriptions. There is a need for a library in Statistcal Programming Language R for preparing small area microdata. The functions of the livbrary connect various data-sources and produce small area population dataset. The functions use multi-core approaches of modern personal desktop computers in order to simulate relatively big areas in less computational time. The sms library, uses the parallel interface of R platform to divide the main simulation process into smaller simulations which then run in parallel. The R library presented in this work, use parallel processing approaches for the efficient production of small area population micro-data, which can be later used for geographical analysis.
+
+This is an example of using sms library. It uses the default data (census, survey) and prepares fitted microdata for the areas described in the census dataset.
+
+Load data
+---
+In order to illustrate the use of sms library, it is useful to use a simple case study. The following case study will produce micro-data of the population of Lesvos island in Greece. The data-sources used are from the census of population of Greece and from an artificial panel dataset constructed for this case study. Similar panel datasets can be found from [Eurostat](http://epp.eurostat.ec.europa.eu/portal/page/portal/eurostat/home/).
+
+```{r}
+library(sms)
+
+data(survey)
+head(survey)
+
+data(census)
+census
+```
+
+Now both datasets have been loaded as data.frames. We need another data.frame which will hold the associations between the census and the survey data.frames. It will hold the names of the columns from both datasets. This is called "data lexicon" and is just holding column names (Strings)
+
+```{r}
+in.lexicon=createLexicon()
+in.lexicon=addDataAssociation(in.lexicon, c("he","he"))
+in.lexicon=addDataAssociation(in.lexicon, c("females","female"))
+in.lexicon
+
+```
+
+Note about data
+----
+The first column of your census data should have a column named: **_areaid_** which should be a unique identifier of each area. ALso notice that the survey data sould use binary (0 or 1) values for all variables.
+
+
+Fitting data
+---
+We need to construct a __microsimulation__ object which will hold all necessery objects of our simulation. Thos objects are the imported data and after the simulation, the results will be stored inside the __microsimulation__ object. This is the main object of every simulation process and it holds all necessary information and results of the fitting process. The following command creates a microsimulation object with the name __insms__ and attach the census and survey data to it. It also defines the number of iterations (_40_) before ending the fitting process.
+```{r microsimulationobject}
+mysms=new("microsimulation", iterations=40,census=census, panel=survey,lexicon=in.lexicon)
+```
+
+The object _mysms_ now has `r length(slotNames(mysms))` slots which contain various objects  and information. We can explore the slot names with the following command:
+```{r}
+slotNames(mysms)
+```
+
+
+The _census_ slot, contains the census data and the _lpane_ slot the panel data of the simulation. The _lexicon_ slot contains the data association information and the _results_ slot contains the results of the simulation process which is currently empty. Finally the _iterations_ slot contains the number of iterations before the selection of the best combination of individuals for each area.
+
+Now that we have a __microsimulation__ object, we use it to start the fitting process.
+
+```{r execute, results='asis', echo=T}
+try01 = run_parallel_HC( mysms )
+```
+The object __try01__ is a new microsimulation object which holds the results of the fitting process as well as the initial data.
+
+
+Explore the results
+---
+The __results__ slot, inside the _try01_ object, holds the results of the fitting process.
+```{r }
+try01
+length( try01@results )
+```
+
+
+The results object, holds the results for 4 areas. For each area, the microsimulation object holds a number of information. Let's examine the third area of our microsimulation.
+
+
+```{r resultss , comment=NA  }
+area03 = try01@results[[3]]
+area03 
+```
+As can be see, the _area03$areaid_ is the name of this area. The  _area03$selection_ object is the generated microdata of the area is the following:
+
+```{r re01, comment=NA, results='html'  }
+area03$selection
+```
+which can be exported to a csv file with the following command:
+```{r output, eval=FALSE  }
+write.table(area03$selection, "area03Microdata.csv", sep=",")
+```
+Each sub-object of the results can be called as following _object$subobject_
+The _area03$tae_ is the Total Absolute Error of the fitting process for this area. 
+The  _area03$tries_ holds the TAE of the random selections during the fitting process. This is the error of each combination, even if the combination isn't selected. 
+Finally, the <b><i>area03$error_states</b></i> holds the progress of the TAE during the iterations. The length of this array, is the same as the number of iterations and it is used mainly for tracking and then plotting the progress of the TAE. The last two arrays, can be plotted in order to examine the progress of the fitting process:
+
+```{r plotreis   }
+plotTries(insms=try01, 3)
+```
+The above plot, shows the progress of TAE during the fitting process. The horizontal axis represents the iterations and the vertical the TAE. Each red circle, represents the TAE of a randomly selected combination of individuals, in each iteration. The dark filled dots, represent, the TAE of the currently selected best combination of individuals. This graph is very useful when the fitting algorithm is Simulated Annealing as it depicts the tolerance of the algorithm during the first iterations.
+
+
+This was a small tutorial on preparing microdata with the use of R and the __*sms*__ library. Please fill free to contact me regarding the *sms* library.
+
+Links
+---
+1. [*__sms__* CRAN page](http://cran.r-project.org/web/packages/sms/index.html)
+2. [Sort Introduction to R and RStudio](http://cran.r-project.org/doc/contrib/Torfs+Brauer-Short-R-Intro.pdf)
+3. [Install R and RStudio](http://www.slideshare.net/jmstanto/installing-r-and-rstudio)
+4. [What is microsimulation](http://en.wikipedia.org/wiki/Microsimulation)
+5. [My homepage](http://www.dimitrisk.gr)

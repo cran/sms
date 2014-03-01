@@ -1,0 +1,22 @@
+\docType{methods}
+\name{getTAEs,microsimulation-method}
+\alias{getTAEs,microsimulation-method}
+\title{getTAEs Method}
+\usage{
+\S4method{getTAEs}{microsimulation}(object)
+}
+\arguments{
+  \item{object}{A microsimulation object to get its
+  information.}
+}
+\value{
+taes A list of numbers indicating the Total Absolute Error
+of the fitting process for each of the census areas.
+}
+\description{
+getTAEs Method
+}
+\author{
+Dimitris Kavroudakis \email{dimitris123@gmail.com}
+}
+

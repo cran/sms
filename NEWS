@@ -1,0 +1,14 @@
+NEWS for SMS package
+
+Changes in sms_2.2
+-------------------
+* New vignette with a full *sms* library example
+* Minor documentation corrections
+* Added error checking points for checking the lexicon, the data and the process of fitting.
+* Added 2 sample datasets. A census dataset of 10 geographical areas and a sample survey dataset of 200 individuals
+
+Changes in sms_2.1
+-------------------
+* Added "microsimulation" object which handles the simulation process.
+* Edit Hill CLimbing and Simulates Annealing algorithms efficiency
+* Changed the library for parallel processing. Now it uses "parallel" package.

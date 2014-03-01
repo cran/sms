@@ -1,0 +1,18 @@
+\docType{methods}
+\name{getInfo,microsimulation-method}
+\alias{getInfo,microsimulation-method}
+\title{getInfo Method}
+\usage{
+\S4method{getInfo}{microsimulation}(object)
+}
+\arguments{
+  \item{object}{A microsimulation object to get its
+  information.}
+}
+\description{
+Get information from a microsimulation object
+}
+\author{
+Dimitris Kavroudakis \email{dimitris123@gmail.com}
+}
+

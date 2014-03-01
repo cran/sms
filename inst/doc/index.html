@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=9" >
+
+<title>sms library tutorial: Preparing microdata</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: rgb(88, 72, 246)
+   }
+
+   pre .number {
+     color: rgb(0, 0, 205);
+   }
+
+   pre .comment {
+     color: rgb(76, 136, 107);
+   }
+
+   pre .keyword {
+     color: rgb(0, 0, 255);
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: rgb(3, 106, 7);
+   }
+</style>
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
+
+
+
+
+</head>
+
+<body>
+<style rel="stylesheet">
+table{border-collapse:collapse;}
+table,th, td{ border: 1px solid grey; padding: 3px;}
+img{display: block;  margin-left: auto; margin-right: auto;   box-shadow:  10px 10px 10px -7px black; }
+body{text-align:justify; margin: 0 auto;font-family: Georgia, Palatino, serif; color: #444444;line-height: 1; max-width: 900px;padding: 30px;}
+h1, h2, h3, h4 {color: #111111;  font-weight: 400;}
+h1, h2, h3, h4, h5, p { margin-bottom: 10px;  padding: 0;}
+h1 { margin-bottom: 0px; text-align:center;   font-size: 36px;}
+.version{text-align:center; font-size: 20px;}
+h2 {    font-size: 25px;
+    /* The bottom margin is small. It's designed to be used with gray meta text
+     * below a post title. */
+    margin: 70px 0px 0px 0px;}
+h3 {    font-size: 24px;}
+h4 {    font-size: 21px;}
+h5 {    font-size: 18px;}
+a {    color: #0099ff;    margin: 0;    padding: 0;    vertical-align: baseline;}
+a:hover {    text-decoration: none;    color: #ff6600;}
+a:visited {    color: purple;}
+ul, ol {    padding: 0;    margin: 0;}
+li {    line-height: 24px;}
+li ul, li ul {    margin-left: 24px;}
+p, ul, ol {    font-size: 16px;    line-height: 24px; }
+pre {    padding: 0px 0px;    max-width: 900px;   white-space: pre-wrap;}
+code { font-family: Consolas, Monaco, Andale Mono, monospace; max-width: 900px; line-height: 1.5; font-size: 13px;}
+aside {    display: block;    float: right;    width: 390px;}
+blockquote {border-left:.5em solid #eee;  padding: 0 2em;  margin-left:0; }
+blockquote  cite {font-size:14px;   line-height:20px;   color:#bfbfbf;}
+blockquote cite:before {  content: '\2014 \00A0';}
+blockquote p {      color: #666;   }
+hr {  width: 540px;    text-align: left;    margin: 0 auto 0 0;    color: #999;}
+</style>
+
+<h1 class="titlos">sms library tutorial: Preparing microdata</h1>
+
+<div class="version">Dr. Dimitris Kavroudakis</div>
+
+<div class="version"><a href="http://www.dimitrisk.gr">dimitrisk.gr</a> - <a href="mailto:dimitris123@gmail.com">dimitris123@gmail.com</a> </div>
+
+<h2>Introduction</h2>
+
+<p>Spatial microsimulation is a methodology aiming to simulate entities such as households, individuals or business in the finer possible scale. This process requires the use of micro-datasets with individual based information. The sms library presented in this work, facilitates the production of small area population micro-data by combining various other datasets. This is a parallelized implementation of random selection with thoptimization to select a micro-dataset with characteristics that mach a macro description. The sms library contains functions for preparing micro-data from census and longitudinal datasets. This process is called fiting and is the primary step in spatial microsimulation methodology. It actualy fits small area datasets to census area descriptions. There is a need for a library in Statistcal Programming Language R for preparing small area microdata. The functions of the livbrary connect various data-sources and produce small area population dataset. The functions use multi-core approaches of modern personal desktop computers in order to simulate relatively big areas in less computational time. The sms library, uses the parallel interface of R platform to divide the main simulation process into smaller simulations which then run in parallel. The R library presented in this work, use parallel processing approaches for the efficient production of small area population micro-data, which can be later used for geographical analysis.</p>
+
+<p>This is an example of using sms library. It uses the default data (census, survey) and prepares fitted microdata for the areas described in the census dataset.</p>
+
+<h2>Load data</h2>
+
+<p>In order to illustrate the use of sms library, it is useful to use a simple case study. The following case study will produce micro-data of the population of Lesvos island in Greece. The data-sources used are from the census of population of Greece and from an artificial panel dataset constructed for this case study. Similar panel datasets can be found from <a href="http://epp.eurostat.ec.europa.eu/portal/page/portal/eurostat/home/">Eurostat</a>.</p>
+
+<pre><code class="r">library(sms)
+
+data(survey)
+head(survey)
+</code></pre>
+
+<pre><code>   pid he female agemature car_owner house_owner working
+1 6501  0      1         0         0           1       1
+2 6502  0      1         1         1           1       0
+3 6503  1      0         0         0           0       1
+4 6504  1      0         1         1           1       1
+5 6505  0      0         0         1           0       1
+6 6506  0      1         0         0           1       1
+</code></pre>
+
+<pre><code class="r">
+data(census)
+census
+</code></pre>
+
+<pre><code>   areaid population he females
+1    8300          7 11       1
+2    8301         20  8       8
+3    8302          8 15       2
+4    8303         20  3       9
+5    8304         10  8      12
+6    8305          3  5       4
+7    8306          6  5       7
+8    8307         10  6       1
+9    8308          5 11      11
+10   8309         13  7       6
+</code></pre>
+
+<p>Now both datasets have been loaded as data.frames. We need another data.frame which will hold the associations between the census and the survey data.frames. It will hold the names of the columns from both datasets. This is called &ldquo;data lexicon&rdquo; and is just holding column names (Strings)</p>
+
+<pre><code class="r">in.lexicon = createLexicon()
+in.lexicon = addDataAssociation(in.lexicon, c(&quot;he&quot;, &quot;he&quot;))
+in.lexicon = addDataAssociation(in.lexicon, c(&quot;females&quot;, &quot;female&quot;))
+in.lexicon
+</code></pre>
+
+<pre><code>           con_1   con_2
+census_row    he females
+survey_row    he  female
+</code></pre>
+
+<h2>Note about data</h2>
+
+<p>The first column of your census data should have a column named: <strong><em>areaid</em></strong> which should be a unique identifier of each area. ALso notice that the survey data sould use binary (0 or 1) values for all variables.</p>
+
+<h2>Fitting data</h2>
+
+<p>We need to construct a <strong>microsimulation</strong> object which will hold all necessery objects of our simulation. Thos objects are the imported data and after the simulation, the results will be stored inside the <strong>microsimulation</strong> object. This is the main object of every simulation process and it holds all necessary information and results of the fitting process. The following command creates a microsimulation object with the name <strong>insms</strong> and attach the census and survey data to it. It also defines the number of iterations (<em>40</em>) before ending the fitting process.</p>
+
+<pre><code class="r">mysms = new(&quot;microsimulation&quot;, iterations = 40, census = census, panel = survey, 
+    lexicon = in.lexicon)
+</code></pre>
+
+<p>The object <em>mysms</em> now has 5 slots which contain various objects  and information. We can explore the slot names with the following command:</p>
+
+<pre><code class="r">slotNames(mysms)
+</code></pre>
+
+<pre><code>[1] &quot;census&quot;     &quot;panel&quot;      &quot;lexicon&quot;    &quot;results&quot;    &quot;iterations&quot;
+</code></pre>
+
+<p>The <em>census</em> slot, contains the census data and the <em>lpane</em> slot the panel data of the simulation. The <em>lexicon</em> slot contains the data association information and the <em>results</em> slot contains the results of the simulation process which is currently empty. Finally the <em>iterations</em> slot contains the number of iterations before the selection of the best combination of individuals for each area.</p>
+
+<p>Now that we have a <strong>microsimulation</strong> object, we use it to start the fitting process.</p>
+
+<pre><code class="r">try01 = run_parallel_HC(mysms)
+</code></pre>
+
+<p>The object <strong>try01</strong> is a new microsimulation object which holds the results of the fitting process as well as the initial data.</p>
+
+<h2>Explore the results</h2>
+
+<p>The <strong>results</strong> slot, inside the <em>try01</em> object, holds the results of the fitting process.</p>
+
+<pre><code class="r">try01
+</code></pre>
+
+<pre><code>An object of class &quot;microsimulation&quot;
+Slot &quot;census&quot;:
+   areaid population he females
+1    8300          7 11       1
+2    8301         20  8       8
+3    8302          8 15       2
+4    8303         20  3       9
+5    8304         10  8      12
+6    8305          3  5       4
+7    8306          6  5       7
+8    8307         10  6       1
+9    8308          5 11      11
+10   8309         13  7       6
+
+Slot &quot;panel&quot;:
+     pid he female agemature car_owner house_owner working
+1   6501  0      1         0         0           1       1
+2   6502  0      1         1         1           1       0
+3   6503  1      0         0         0           0       1
+4   6504  1      0         1         1           1       1
+5   6505  0      0         0         1           0       1
+6   6506  0      1         0         0           1       1
+7   6507  1      0         1         1           1       0
+8   6508  0      0         1         1           0       1
+9   6509  1      0         1         0           0       0
+10  6510  1      1         0         0           0       0
+11  6511  1      0         0         0           1       0
+12  6512  1      0         1         1           0       0
+13  6513  0      1         1         1           0       0
+14  6514  0      0         1         0           0       0
+15  6515  0      0         1         1           0       1
+16  6516  0      0         0         0           0       0
+17  6517  1      1         1         1           0       0
+18  6518  0      0         1         0           0       0
+19  6519  0      1         0         0           0       1
+20  6520  0      1         0         0           1       0
+21  6521  0      1         0         1           1       0
+22  6522  0      1         1         0           0       1
+23  6523  0      0         1         1           1       1
+24  6524  1      0         0         0           1       1
+25  6525  1      1         1         0           1       1
+26  6526  1      0         0         1           1       1
+27  6527  0      1         0         0           1       0
+28  6528  0      0         0         1           1       0
+29  6529  0      0         0         0           1       0
+30  6530  0      0         1         0           1       0
+31  6531  0      0         1         0           1       1
+32  6532  0      0         0         0           0       1
+33  6533  1      1         0         1           1       1
+34  6534  0      1         1         0           0       0
+35  6535  0      0         1         0           1       0
+36  6536  0      0         1         1           1       1
+37  6537  1      0         1         1           1       1
+38  6538  0      1         1         1           1       0
+39  6539  1      1         0         1           1       1
+40  6540  1      0         1         0           0       1
+41  6541  1      1         0         0           1       0
+42  6542  1      1         0         0           1       1
+43  6543  0      1         0         0           0       1
+44  6544  0      0         1         1           1       1
+45  6545  1      0         0         1           1       0
+46  6546  1      0         1         1           1       1
+47  6547  0      0         0         0           0       0
+48  6548  0      0         1         0           1       1
+49  6549  1      1         0         0           1       1
+50  6550  0      1         0         1           1       0
+51  6551  0      0         0         1           0       0
+52  6552  0      0         1         1           1       0
+53  6553  0      1         0         0           0       1
+54  6554  1      1         0         1           0       1
+55  6555  1      0         1         0           1       0
+56  6556  1      1         1         1           0       1
+57  6557  0      0         0         0           0       1
+58  6558  1      1         0         0           0       1
+59  6559  1      1         1         0           0       0
+60  6560  0      1         1         0           1       1
+61  6561  1      0         0         0           1       1
+62  6562  1      0         0         1           0       0
+63  6563  0      0         0         0           1       0
+64  6564  1      1         1         0           1       0
+65  6565  0      0         0         1           1       1
+66  6566  0      1         1         0           1       1
+67  6567  1      0         0         0           0       1
+68  6568  1      1         1         1           1       0
+69  6569  0      0         1         1           1       1
+70  6570  1      0         1         0           0       0
+71  6571  0      0         1         0           1       1
+72  6572  1      0         1         1           1       1
+73  6573  0      1         1         1           0       0
+74  6574  1      0         1         0           0       0
+75  6575  1      1         1         1           1       0
+76  6576  0      1         0         0           0       1
+77  6577  0      0         0         0           0       1
+78  6578  1      1         1         1           0       0
+79  6579  1      1         0         1           1       0
+80  6580  0      0         1         0           0       1
+81  6581  1      1         0         0           1       1
+82  6582  0      1         0         0           1       0
+83  6583  0      1         0         1           0       0
+84  6584  0      1         0         1           1       0
+85  6585  1      1         0         0           1       0
+86  6586  0      0         1         1           1       1
+87  6587  0      1         1         1           0       0
+88  6588  1      0         0         1           1       0
+89  6589  1      1         0         1           1       0
+90  6590  1      1         1         1           1       1
+91  6591  1      1         0         0           0       1
+92  6592  1      1         0         0           0       0
+93  6593  0      0         1         0           1       0
+94  6594  0      0         0         1           0       1
+95  6595  1      1         0         0           1       1
+96  6596  0      0         0         1           1       1
+97  6597  0      0         1         1           1       1
+98  6598  0      1         0         1           1       1
+99  6599  0      0         1         0           0       0
+100 6600  0      1         1         1           0       0
+101 6601  1      0         1         1           1       0
+102 6602  0      1         1         1           1       1
+103 6603  0      0         0         0           1       0
+104 6604  0      0         0         0           1       1
+105 6605  0      1         0         1           1       0
+106 6606  0      1         1         1           1       1
+107 6607  1      1         1         1           0       1
+108 6608  1      0         1         1           1       0
+109 6609  0      0         1         1           0       1
+110 6610  1      0         1         0           1       1
+111 6611  0      1         0         1           1       0
+112 6612  0      1         0         1           0       0
+113 6613  1      1         1         0           0       1
+114 6614  1      1         0         0           0       1
+115 6615  1      0         0         0           1       1
+116 6616  0      1         0         0           0       1
+117 6617  0      0         1         0           1       1
+118 6618  0      1         1         0           0       1
+119 6619  1      0         0         0           0       0
+120 6620  0      1         1         0           0       0
+121 6621  1      1         0         0           1       1
+122 6622  0      0         1         0           1       0
+123 6623  0      1         1         0           1       0
+124 6624  0      0         1         0           0       1
+125 6625  1      0         0         1           1       1
+126 6626  0      1         0         0           0       1
+127 6627  1      0         0         1           0       1
+128 6628  1      1         1         1           1       1
+129 6629  0      0         1         0           0       1
+130 6630  0      1         0         1           1       1
+131 6631  1      0         0         1           1       0
+132 6632  0      1         1         1           1       1
+133 6633  0      0         0         0           0       0
+134 6634  1      1         0         0           1       0
+135 6635  0      0         0         0           0       0
+136 6636  1      1         0         1           0       1
+137 6637  1      1         1         1           0       0
+138 6638  1      0         0         0           0       1
+139 6639  1      0         0         0           0       1
+140 6640  1      0         0         1           1       1
+141 6641  1      1         1         0           0       0
+142 6642  0      1         0         0           1       0
+143 6643  1      0         1         1           1       1
+144 6644  1      0         1         1           0       0
+145 6645  0      0         0         1           0       1
+146 6646  0      1         1         1           1       1
+147 6647  1      1         0         0           0       1
+148 6648  0      0         1         1           1       0
+149 6649  1      1         1         1           0       0
+150 6650  1      1         0         1           1       1
+151 6651  0      1         0         0           0       0
+152 6652  0      1         1         1           0       0
+153 6653  0      1         0         1           1       1
+154 6654  0      0         1         0           0       0
+155 6655  0      1         1         0           1       1
+156 6656  0      0         1         1           0       0
+157 6657  1      0         0         0           0       0
+158 6658  0      0         1         0           1       1
+159 6659  1      1         0         1           0       1
+160 6660  0      0         1         1           1       1
+161 6661  0      0         0         0           0       1
+162 6662  1      1         1         0           0       0
+163 6663  1      0         0         1           1       0
+164 6664  1      1         1         1           1       0
+165 6665  0      0         1         1           1       0
+166 6666  1      1         1         0           1       1
+167 6667  1      0         0         0           1       0
+168 6668  1      0         1         0           0       1
+169 6669  1      1         1         0           0       1
+170 6670  0      1         1         1           0       1
+171 6671  1      0         0         1           1       1
+172 6672  1      1         0         0           1       0
+173 6673  0      0         1         0           1       1
+174 6674  0      1         0         0           1       0
+175 6675  1      1         0         1           0       0
+176 6676  0      0         0         0           0       0
+177 6677  1      0         0         1           1       1
+178 6678  1      0         0         0           0       0
+179 6679  1      1         1         1           0       0
+180 6680  1      1         1         0           0       1
+181 6681  1      1         0         1           1       0
+182 6682  1      0         0         0           1       0
+183 6683  1      0         1         1           0       0
+184 6684  0      0         1         0           1       0
+185 6685  1      1         0         1           0       1
+186 6686  0      0         1         0           1       1
+187 6687  1      0         1         0           1       0
+188 6688  1      1         1         1           0       1
+189 6689  0      0         1         0           0       1
+190 6690  1      1         0         0           1       0
+191 6691  0      0         0         0           1       0
+192 6692  0      0         0         1           1       1
+193 6693  0      0         1         1           1       1
+194 6694  1      0         1         0           0       1
+195 6695  1      1         0         1           1       1
+196 6696  1      1         0         1           1       1
+197 6697  1      0         1         0           1       0
+198 6698  0      1         1         0           1       1
+199 6699  1      1         0         1           1       0
+200 6700  1      1         1         1           0       0
+
+Slot &quot;lexicon&quot;:
+           con_1   con_2
+census_row    he females
+survey_row    he  female
+
+Slot &quot;results&quot;:
+[[1]]
+[[1]]$areaid
+[1] 8300
+
+[[1]]$selection
+     pid he female agemature car_owner house_owner working
+55  6555  1      0         1         0           1       0
+88  6588  1      0         0         1           1       0
+144 6644  1      0         1         1           0       0
+128 6628  1      1         1         1           1       1
+4   6504  1      0         1         1           1       1
+96  6596  0      0         0         1           1       1
+39  6539  1      1         0         1           1       1
+
+[[1]]$tae
+[1] 6
+
+[[1]]$tries
+ [1]  8  6  6 11  7 11  9 10  9 10 12 10  9  9 13  9 11  9 12 12  8  9 10
+[24] 15  6 11 11 12  9  8  9  6 12  9 11 10  8 10  9  8
+
+[[1]]$error_states
+ [1] 8 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6
+[36] 6 6 6 6 6
+
+
+[[2]]
+[[2]]$areaid
+[1] 8301
+
+[[2]]$selection
+      pid he female agemature car_owner house_owner working
+16   6516  0      0         0         0           0       0
+182  6682  1      0         0         0           1       0
+32   6532  0      0         0         0           0       1
+37   6537  1      0         1         1           1       1
+79   6579  1      1         0         1           1       0
+200  6700  1      1         1         1           0       0
+68   6568  1      1         1         1           1       0
+91   6591  1      1         0         0           0       1
+86   6586  0      0         1         1           1       1
+82   6582  0      1         0         0           1       0
+197  6697  1      0         1         0           1       0
+105  6605  0      1         0         1           1       0
+18   6518  0      0         1         0           0       0
+32.1 6532  0      0         0         0           0       1
+31   6531  0      0         1         0           1       1
+20   6520  0      1         0         0           1       0
+96   6596  0      0         0         1           1       1
+170  6670  0      1         1         1           0       1
+150  6650  1      1         0         1           1       1
+161  6661  0      0         0         0           0       1
+
+[[2]]$tae
+[1] 1
+
+[[2]]$tries
+ [1]  5 14  7  3  3  5  6  4  7  7  4  6  5  1  5  3  4  4  6  7  5  8  9
+[24]  5  9  6  6  4  1  3  2  4 10  4  3  2  4  4  1  3
+
+[[2]]$error_states
+ [1] 5 5 5 3 3 3 3 3 3 3 3 3 3 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+[36] 1 1 1 1 1
+
+
+[[3]]
+[[3]]$areaid
+[1] 8302
+
+[[3]]$selection
+     pid he female agemature car_owner house_owner working
+169 6669  1      1         1         0           0       1
+188 6688  1      1         1         1           0       1
+104 6604  0      0         0         0           1       1
+160 6660  0      0         1         1           1       1
+4   6504  1      0         1         1           1       1
+7   6507  1      0         1         1           1       0
+4.1 6504  1      0         1         1           1       1
+184 6684  0      0         1         0           1       0
+
+[[3]]$tae
+[1] 10
+
+[[3]]$tries
+ [1] 14 15 13 12 13 13 11 12 12 17 13 11 14 10 10 15 14 13 12 12 12 11 13
+[24] 12 14 16 13 13 13 12 11 15 16 12 13 10 12 16 13 11
+
+[[3]]$error_states
+ [1] 14 14 13 12 12 12 11 11 11 11 11 11 11 10 10 10 10 10 10 10 10 10 10
+[24] 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10
+
+
+[[4]]
+[[4]]$areaid
+[1] 8303
+
+[[4]]$selection
+      pid he female agemature car_owner house_owner working
+117  6617  0      0         1         0           1       1
+79   6579  1      1         0         1           1       0
+174  6674  0      1         0         0           1       0
+149  6649  1      1         1         1           0       0
+198  6698  0      1         1         0           1       1
+124  6624  0      0         1         0           0       1
+96   6596  0      0         0         1           1       1
+111  6611  0      1         0         1           1       0
+73   6573  0      1         1         1           0       0
+104  6604  0      0         0         0           1       1
+72   6572  1      0         1         1           1       1
+129  6629  0      0         1         0           0       1
+96.1 6596  0      0         0         1           1       1
+161  6661  0      0         0         0           0       1
+187  6687  1      0         1         0           1       0
+48   6548  0      0         1         0           1       1
+128  6628  1      1         1         1           1       1
+20   6520  0      1         0         0           1       0
+13   6513  0      1         1         1           0       0
+115  6615  1      0         0         0           1       1
+
+[[4]]$tae
+[1] 3
+
+[[4]]$tries
+ [1]  6 10  7  9 10  9  5  3  6 16 14 11  7  7 11  9  9  7 10  7  8  7  9
+[24]  8  9 10  8  8  9 12 14 10  4  8  9  9  8  8 15 11
+
+[[4]]$error_states
+ [1] 6 6 6 6 6 6 5 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
+[36] 3 3 3 3 3
+
+
+[[5]]
+[[5]]$areaid
+[1] 8304
+
+[[5]]$selection
+     pid he female agemature car_owner house_owner working
+33  6533  1      1         0         1           1       1
+125 6625  1      0         0         1           1       1
+99  6599  0      0         1         0           0       0
+10  6510  1      1         0         0           0       0
+181 6681  1      1         0         1           1       0
+65  6565  0      0         0         1           1       1
+137 6637  1      1         1         1           0       0
+149 6649  1      1         1         1           0       0
+112 6612  0      1         0         1           0       0
+179 6679  1      1         1         1           0       0
+
+[[5]]$tae
+[1] 6
+
+[[5]]$tries
+ [1] 11 14 13 14 10  7 13  9 13 14 12 11 16  9  8 11 10 11 12 10  9 13  9
+[24]  9  7  9 10  9 12  7 11 10  8  8  6  7 10 10  8  7
+
+[[5]]$error_states
+ [1] 11 11 11 11 10  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7  7
+[24]  7  7  7  7  7  7  7  7  7  7  7  6  6  6  6  6  6
+
+
+[[6]]
+[[6]]$areaid
+[1] 8305
+
+[[6]]$selection
+     pid he female agemature car_owner house_owner working
+159 6659  1      1         0         1           0       1
+179 6679  1      1         1         1           0       0
+169 6669  1      1         1         0           0       1
+
+[[6]]$tae
+[1] 3
+
+[[6]]$tries
+ [1] 5 5 6 9 5 6 6 5 7 8 7 7 6 7 7 6 6 3 5 7 5 7 5 7 8 6 5 5 5 7 8 5 6 6 6
+[36] 6 5 6 7 6
+
+[[6]]$error_states
+ [1] 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
+[36] 3 3 3 3 3
+
+
+[[7]]
+[[7]]$areaid
+[1] 8306
+
+[[7]]$selection
+       pid he female agemature car_owner house_owner working
+123   6623  0      1         1         0           1       0
+41    6541  1      1         0         0           1       0
+113   6613  1      1         1         0           0       1
+113.1 6613  1      1         1         0           0       1
+6     6506  0      1         0         0           1       1
+199   6699  1      1         0         1           1       0
+
+[[7]]$tae
+[1] 2
+
+[[7]]$tries
+ [1] 3 8 8 8 6 5 6 7 6 5 4 7 2 7 9 8 5 5 5 6 9 4 5 4 5 5 5 5 5 6 4 9 7 6 8
+[36] 6 5 7 4 7
+
+[[7]]$error_states
+ [1] 3 3 3 3 3 3 3 3 3 3 3 3 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+[36] 2 2 2 2 2
+
+
+[[8]]
+[[8]]$areaid
+[1] 8307
+
+[[8]]$selection
+     pid he female agemature car_owner house_owner working
+192 6692  0      0         0         1           1       1
+177 6677  1      0         0         1           1       1
+72  6572  1      0         1         1           1       1
+187 6687  1      0         1         0           1       0
+165 6665  0      0         1         1           1       0
+200 6700  1      1         1         1           0       0
+70  6570  1      0         1         0           0       0
+15  6515  0      0         1         1           0       1
+67  6567  1      0         0         0           0       1
+99  6599  0      0         1         0           0       0
+
+[[8]]$tae
+[1] 0
+
+[[8]]$tries
+ [1]  4  9  2  6 11  6  2  4  3  4  9  3  3  7  7  6  7  7  9  5  4  5  5
+[24]  5  3  7  8  6  8  6  4  5  0  6  7  5  5  4  6  5
+
+[[8]]$error_states
+ [1] 4 4 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 0 0 0
+[36] 0 0 0 0 0
+
+
+[[9]]
+[[9]]$areaid
+[1] 8308
+
+[[9]]$selection
+     pid he female agemature car_owner house_owner working
+59  6559  1      1         1         0           0       0
+89  6589  1      1         0         1           1       0
+96  6596  0      0         0         1           1       1
+49  6549  1      1         0         0           1       1
+141 6641  1      1         1         0           0       0
+
+[[9]]$tae
+[1] 14
+
+[[9]]$tries
+ [1] 18 20 18 17 16 15 17 14 19 21 15 16 14 15 18 18 18 18 19 17 18 15 17
+[24] 17 18 16 14 17 18 19 19 18 15 16 17 15 17 16 16 17
+
+[[9]]$error_states
+ [1] 18 18 18 17 16 15 15 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14
+[24] 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14
+
+
+[[10]]
+[[10]]$areaid
+[1] 8309
+
+[[10]]$selection
+      pid he female agemature car_owner house_owner working
+47   6547  0      0         0         0           0       0
+96   6596  0      0         0         1           1       1
+84   6584  0      1         0         1           1       0
+37   6537  1      0         1         1           1       1
+41   6541  1      1         0         0           1       0
+80   6580  0      0         1         0           0       1
+45   6545  1      0         0         1           1       0
+165  6665  0      0         1         1           1       0
+164  6664  1      1         1         1           1       0
+101  6601  1      0         1         1           1       0
+107  6607  1      1         1         1           0       1
+6    6506  0      1         0         0           1       1
+41.1 6541  1      1         0         0           1       0
+
+[[10]]$tae
+[1] 0
+
+[[10]]$tries
+ [1] 5 3 6 2 4 1 7 1 3 1 3 0 3 2 3 2 6 3 1 2 2 3 1 2 2 2 3 5 3 3 3 2 2 1 3
+[36] 4 1 2 2 1
+
+[[10]]$error_states
+ [1] 5 3 3 2 2 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[36] 0 0 0 0 0
+
+
+
+Slot &quot;iterations&quot;:
+[1] 40
+</code></pre>
+
+<pre><code class="r">length(try01@results)
+</code></pre>
+
+<pre><code>[1] 10
+</code></pre>
+
+<p>The results object, holds the results for 4 areas. For each area, the microsimulation object holds a number of information. Let&#39;s examine the third area of our microsimulation.</p>
+
+<pre><code class="r">area03 = try01@results[[3]]
+area03
+</code></pre>
+
+<pre><code>$areaid
+[1] 8302
+
+$selection
+     pid he female agemature car_owner house_owner working
+169 6669  1      1         1         0           0       1
+188 6688  1      1         1         1           0       1
+104 6604  0      0         0         0           1       1
+160 6660  0      0         1         1           1       1
+4   6504  1      0         1         1           1       1
+7   6507  1      0         1         1           1       0
+4.1 6504  1      0         1         1           1       1
+184 6684  0      0         1         0           1       0
+
+$tae
+[1] 10
+
+$tries
+ [1] 14 15 13 12 13 13 11 12 12 17 13 11 14 10 10 15 14 13 12 12 12 11 13
+[24] 12 14 16 13 13 13 12 11 15 16 12 13 10 12 16 13 11
+
+$error_states
+ [1] 14 14 13 12 12 12 11 11 11 11 11 11 11 10 10 10 10 10 10 10 10 10 10
+[24] 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10
+</code></pre>
+
+<p>As can be see, the <em>area03$areaid</em> is the name of this area. The  <em>area03$selection</em> object is the generated microdata of the area is the following:</p>
+
+<pre><code class="r">area03$selection
+</code></pre>
+
+<pre><code>     pid he female agemature car_owner house_owner working
+169 6669  1      1         1         0           0       1
+188 6688  1      1         1         1           0       1
+104 6604  0      0         0         0           1       1
+160 6660  0      0         1         1           1       1
+4   6504  1      0         1         1           1       1
+7   6507  1      0         1         1           1       0
+4.1 6504  1      0         1         1           1       1
+184 6684  0      0         1         0           1       0
+</code></pre>
+
+<p>which can be exported to a csv file with the following command:</p>
+
+<pre><code class="r">write.table(area03$selection, &quot;area03Microdata.csv&quot;, sep = &quot;,&quot;)
+</code></pre>
+
+<p>Each sub-object of the results can be called as following <em>object$subobject</em>
+The <em>area03$tae</em> is the Total Absolute Error of the fitting process for this area. 
+The  <em>area03$tries</em> holds the TAE of the random selections during the fitting process. This is the error of each combination, even if the combination isn&#39;t selected. 
+Finally, the <b><i>area03$error_states</b></i> holds the progress of the TAE during the iterations. The length of this array, is the same as the number of iterations and it is used mainly for tracking and then plotting the progress of the TAE. The last two arrays, can be plotted in order to examine the progress of the fitting process:</p>
+
+<pre><code class="r">plotTries(insms = try01, 3)
+</code></pre>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk plotreis"/> </p>
+
+<p>The above plot, shows the progress of TAE during the fitting process. The horizontal axis represents the iterations and the vertical the TAE. Each red circle, represents the TAE of a randomly selected combination of individuals, in each iteration. The dark filled dots, represent, the TAE of the currently selected best combination of individuals. This graph is very useful when the fitting algorithm is Simulated Annealing as it depicts the tolerance of the algorithm during the first iterations.</p>
+
+<p>This was a small tutorial on preparing microdata with the use of R and the <strong><em>sms</em></strong> library. Please fill free to contact me regarding the <em>sms</em> library.</p>
+
+<h2>Links</h2>
+
+<ol>
+<li><a href="http://cran.r-project.org/web/packages/sms/index.html"><em><strong>sms</strong></em> CRAN page</a></li>
+<li><a href="http://cran.r-project.org/doc/contrib/Torfs+Brauer-Short-R-Intro.pdf">Sort Introduction to R and RStudio</a></li>
+<li><a href="http://www.slideshare.net/jmstanto/installing-r-and-rstudio">Install R and RStudio</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Microsimulation">What is microsimulation</a></li>
+<li><a href="http://www.dimitrisk.gr">My homepage</a></li>
+</ol>
+
+</body>
+
+</html>
+

@@ -1,3 +1,4 @@
+\docType{class}
 \name{microsimulation-class}
 \alias{microsimulation-class}
 \title{A microsimulation object}
@@ -6,7 +7,7 @@
   contains census information about a geographical area}
 
   \item{panel:}{A data.frame containing the individual
-  based records from a panel survey. those data will be
+  based records from a panel survey. Those data will be
   fitted to small area contrains and will populate each
   vrtual area.}
 
@@ -21,10 +22,10 @@
   of the fitting process.}
 }
 \description{
-  It holds all microsimulation details and objects such as
-  data, results etc.
+It holds all microsimulation details and objects such as
+data, results etc.
 }
 \author{
-  Dimitris Kavroudakis \email{dimitris123@gmail.com}
+Dimitris Kavroudakis \email{dimitris123@gmail.com}
 }
 
