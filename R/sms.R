@@ -1,10 +1,6 @@
 
-# to add data: http://stackoverflow.com/questions/12391195/include-data-examples-in-developing-r-packages
-
-
-
 ##' Generate small area population microdata from census and survey datasets. 
-##' Fit the survey data to census area descriptions and export the population of small areas.
+##' Fit the survey data to census area descriptions and export the population of small areas (microdata).
 ##' 
 ##' Please feel free to contact me for error, problems or other features of the library.
 ##' \email{dimitris123@@gmail.com}

@@ -1,5 +1,9 @@
 NEWS for SMS package
 
+Changes in sms_2.3
+-------------------
+* Changed the sample data for census and panel.
+
 Changes in sms_2.2
 -------------------
 * New vignette with a full *sms* library example
