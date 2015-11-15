@@ -1,0 +1,20 @@
+bibentry(bibtype = "Article",
+  title        = "{sms}: An {R} Package for the Construction of Microdata for Geographical Analysis",
+  author       = person(given = "Dimitris",
+                        family = "Kavroudakis",
+                        email = "dimitrisk@geo.aegean.gr"),
+  journal      = "Journal of Statistical Software",
+  year         = "2015",
+  volume       = "68",
+  number       = "2",
+  pages        = "1--23",
+  doi          = "10.18637/jss.v068.i02",
+
+  header       = "To cite sms in publications use:",
+  textVersion  =
+  paste("Dimitris Kavroudakis (2015).",
+        "sms: An R Package for the Construction of Microdata for Geographical Analysis.",
+        "Journal of Statistical Software, 68(2), 1-23.",
+        "doi:10.18637/jss.v068.i02")
+)
+

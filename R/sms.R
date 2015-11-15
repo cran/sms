@@ -2,15 +2,14 @@
 ##' Generate small area population microdata from census and survey datasets. 
 ##' Fit the survey data to census area descriptions and export the population of small areas (microdata).
 ##' 
-##' Please feel free to contact me for error, problems or other features of the library.
-##' \email{dimitris123@@gmail.com}
-##' 
 ##' Generate small area population microdata from census and panel datasets. 
 ##' Fit the survey data to census area descriptions and export the popultion of small areas.
 ##' 
 ##' @author Dimitris Kavroudakis \email{dimitris123@@gmail.com}
 ##' @name sms-package
 ##' @docType package
+##' @references Dimitris Kavroudakis D (2015). \strong{sms: An R Package for the Construction of Microdata for 
+##' Geographical Analysis.} \emph{Journal of Statistical Software}, \strong{68}(2), pp. 1-23. \url{http://10.18637/jss.v068.i02}
 ##' @title Spatial Microsimulation Library
 NULL
 
@@ -132,6 +131,17 @@ setMethod("getTAEs", signature(object = "microsimulation"), function(object) {
 #====================== Simulation Methods ========================
 
 
+##' mysetSeed
+##' 
+##' mysetSeed 
+##' @title mysetSeed
+##' @param inseed A number to set as a random seed.
+##' @export
+##' @examples library(sms)
+##' sms::mysetSeed(1900)
+mysetSeed=function(inseed){
+  set.seed(inseed)
+}
 
 ##' Select n random rows from a dataframe
 ##'
@@ -150,6 +160,7 @@ setMethod("getTAEs", signature(object = "microsimulation"), function(object) {
 ##' print(some.individuals)     # Print the selection of individuals
 random_panel_selection=function(indf,n){
   #print(paste0("Selecting ", n, " random individuals from the survey data."))
+  
   return(indf[sample(nrow(indf), n, replace=TRUE), ]) 
 }
 
@@ -255,7 +266,7 @@ selection_for_area=function(inpanel, area_census, inlexicon){
 ##' in.lexicon=addDataAssociation(in.lexicon, c("females","female"))
 ##' 
 ##' ansms = new("microsimulation", census=census, panel=survey, lexicon=in.lexicon, iterations=5)
-##' sa = run_parallel_SA(ansms)
+##' sa = run_parallel_SA(ansms, inseed=1900)
 ##' plotTries( sa, 1 )
 ##' @export
 plotTries <- function(insms, number){
@@ -288,6 +299,7 @@ plotTries <- function(insms, number){
 ##' @param area A census area
 ##' @param insms A microsimulation object which holds the data and details of 
 ##' the simulation such as iterations, lexicon.
+##' @param inseed test
 ##' @return list A list with results (#areaid, #selection, #tae, #tries, #error_states).
 ##' @author Dimitris Kavroudakis \email{dimitris123@@gmail.com}
 ##' @export
@@ -302,7 +314,7 @@ plotTries <- function(insms, number){
 ##' insms= new("microsimulation",census=census,panel=survey, lexicon=in.lexicon, iterations=10)
 ##' best=find_best_selection(this_area, insms)
 ##' print(best)
-find_best_selection<- function(area,insms){
+find_best_selection<- function(area,insms, inseed=-1){
   area_census=as.data.frame(area)
   it=insms@iterations
   bhps=insms@panel
@@ -311,6 +323,12 @@ find_best_selection<- function(area,insms){
   errors_list=c()
   current_error_list=c()
   result_selection=NULL
+  
+  if (inseed>0){
+    set.seed(inseed)
+  }
+  
+  
   for (i in 1:it){
     current_selection=sms::selection_for_area(bhps,area_census, my.lexicon)
     if (i==1){# At first time
@@ -342,6 +360,7 @@ find_best_selection<- function(area,insms){
 ##' @title run_parallel_HC
 ##' @param insms A microsimulation object which holds the data and details 
 ##' of the simulation such as iterations, lexicon.
+##' @param inseed A number to be used for random seed.
 ##' @return msm_results An object with the results of the simulation, for each area.
 ##' @author Dimitris Kavroudakis \email{dimitris123@@gmail.com}
 ##' @examples library(sms)
@@ -352,17 +371,18 @@ find_best_selection<- function(area,insms){
 ##' in.lexicon=addDataAssociation(in.lexicon, c("females","female"))
 ##' 
 ##' insms= new("microsimulation",census=census,panel=survey, lexicon=in.lexicon, iterations=10)
-##' re=run_parallel_HC(insms)
+##' re=run_parallel_HC(insms, inseed=1900)
 ##' print(re)
 ##' 
 ##' @export
 #run_parallel <- function(census,iterations,bhps, the.lexicon){
-run_parallel_HC <- function(insms){
+run_parallel_HC <- function(insms, inseed=-1){
   #options(cores=2)
   #library(parallel)
   #library(doParallel)
   #library(foreach)
   #library(doSNOW)
+  #library(iterators)
   cores=2
   cl <- parallel::makePSOCKcluster(cores ) 
   doParallel::registerDoParallel(cl)
@@ -372,9 +392,11 @@ run_parallel_HC <- function(insms){
   #doParallel::registerDoParallel(cl)
   myFunctions=c("find_best_selection",  "calculate_error", 
                 "selection_for_area", "random_panel_selection")
+  
   msm_results=
-    foreach::foreach(i=iter(insms@census, by='row'), .export=myFunctions, combine=c) %dopar% {
-      sms::find_best_selection(i,insms)
+    foreach::foreach(i=iterators::iter(insms@census, by='row'), .export=myFunctions, combine=c) %dopar% {
+      
+      sms::find_best_selection(i,insms, inseed)
     }
   parallel::stopCluster(cl)
   insms@results= msm_results
@@ -412,7 +434,7 @@ run_serial <- function(insms){
   myFunctions=c("find_best_selection_SA", "calculate_error", "selection_for_area", 
                 "random_panel_selection")
   msm_results=
-    foreach::foreach(i=iter(insms@census, by='row'), .export=myFunctions, combine=c) %do% {
+    foreach::foreach(i=iterators::iter(insms@census, by='row'), .export=myFunctions, combine=c) %do% {
       sms::find_best_selection(i,insms)
     }
   i <- NULL 
@@ -426,6 +448,7 @@ run_serial <- function(insms){
 ##' @param area_census A census dataset consisting of various areas rows.
 ##' @param insms A microsimulation object which holds the data and details 
 ##' of the simulation such as iterations, lexicon.
+##' @param inseed A number to be used for random seed.
 ##' @return msm_results An object with the results of the simulation, of this area.
 ##' @author Dimitris Kavroudakis \email{dimitris123@@gmail.com}
 ##' @examples library(sms)
@@ -437,10 +460,10 @@ run_serial <- function(insms){
 ##' 
 ##' this_area=as.data.frame(census[1,]) #Select the first area from the census table
 ##' insms= new("microsimulation",census=census, panel=survey, lexicon=in.lexicon, iterations=5)
-##' myselection= find_best_selection_SA( this_area, insms)
+##' myselection= find_best_selection_SA( this_area, insms, inseed=1900)
 ##' print(myselection)
 ##' @export
-find_best_selection_SA <- function (area_census, insms) {
+find_best_selection_SA <- function (area_census, insms, inseed=-1  ) {
   iterations=insms@iterations
   bhps=insms@panel
   in.lexicon=insms@lexicon
@@ -450,6 +473,12 @@ find_best_selection_SA <- function (area_census, insms) {
   current_error_list=c()
   result_selection=NULL
   tolerance=iterations/2
+  
+  if (inseed>0){
+    set.seed(inseed)
+  }
+  
+  
   for (i in 1:iterations){
     current_selection=selection_for_area(bhps,area_census, in.lexicon)
     if (i==1){# At first time
@@ -490,6 +519,7 @@ find_best_selection_SA <- function (area_census, insms) {
 ##' @title run_parallel_SA
 ##' @param insms A microsimulation object which holds the data and details 
 ##' of the simulation such as iterations, lexicon.
+##' @param inseed A random number to be used for random seed.
 ##' @return msm_results An object with the results of the simulation, for each area.
 ##' @author Dimitris Kavroudakis \email{dimitris123@@gmail.com}
 ##' @examples library(sms)
@@ -500,10 +530,10 @@ find_best_selection_SA <- function (area_census, insms) {
 ##' in.lexicon=addDataAssociation(in.lexicon, c("females","female"))
 ##' 
 ##' insms= new("microsimulation",census=census, panel=survey, lexicon=in.lexicon, iterations=5)
-##' results= run_parallel_SA(insms)
+##' results= run_parallel_SA(insms, inseed=1900)
 ##' print(results)
 ##' @export
-run_parallel_SA <- function(insms){
+run_parallel_SA <- function(insms, inseed=-1){
   census=insms@census 
   iterations=insms@iterations 
   bhps=insms@panel 
@@ -526,8 +556,11 @@ run_parallel_SA <- function(insms){
   myFunctions=c("find_best_selection_SA", "calculate_error", "selection_for_area", 
                 "random_panel_selection")
   msm_results=
-    foreach::foreach(i=iter(census, by='row'), .export=myFunctions, combine=c) %dopar% {
-      find_best_selection_SA(i,insms)
+    foreach::foreach(i=iterators::iter(census, by='row'), .export=myFunctions, combine=c) %dopar% {
+      
+        find_best_selection_SA(i,insms, inseed)
+      
+      
     }
   parallel::stopCluster(cl)
   i <- NULL 
@@ -657,3 +690,8 @@ check_lexicon=function(inlex){
   
   #cat("\n----  End Checking Lexicon  ----\n\n")
 }
+
+
+
+
+

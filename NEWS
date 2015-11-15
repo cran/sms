@@ -1,5 +1,9 @@
 NEWS for SMS package
 
+Changes in sms_2.3.1
+-------------------
+* Added the option for random seeding in the parallel HC and parallel SA functions.
+
 Changes in sms_2.3
 -------------------
 * Changed the sample data for census and panel.
